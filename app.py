@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
-from skimage import io
 from keras.models import load_model
-import cv2
 from PIL import Image #use PIL
 import numpy as np
 
@@ -15,8 +13,8 @@ def init():
         print("File Received")
         filename = secure_filename(file.filename)
         print(filename)
-        #open the image from working directory
-        image = image.open(file)
+        # Open the image form working directory
+        image = Image.open(file)
         model = load_model("Pneumonia Model")
         img = np.asarray(image)
         img.resize((150,150,3))
@@ -26,7 +24,6 @@ def init():
         return(render_template("index.html", result=str(pred)))
     else:
         return(render_template("index.html", result="WAITING"))
-    
 if __name__ == "__main__":
     app.run()
 
